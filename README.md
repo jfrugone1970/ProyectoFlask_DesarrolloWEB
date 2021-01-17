@@ -16,7 +16,7 @@ Flask en un framework de desarrollo WEB con Python que es otro framework, es un 
 c:\Users\Lenovo>python --version
 
 <p align="center">
-  <img src = "Flask.jpg" />
+  <img src = "Version_Python.jpg" />
 </p>
 
 
@@ -581,5 +581,128 @@ y asi para todos los templates
 
 ahora bien para el manejo de las bases de datos te adjunto el codgo para que veas como esta codificado y veas el proyecto de "Flask"
 
+<h3><strong>Desarrollo web con Flask paso a paso - Bases de datos y formularios</strong></p>
+<p><strong>Crear base de datos</strong></p>
 
+A partir de ahora vamos a estar trabajando con una aplicacion completa vamos a crear una base de datos antes de nada debes de tener instalado Mysql en tu maquina para ellos puedes tener instalado wampserver que trae el mysql en el caso que ya tengas inslado wampserver debes de abrir mysql de la barra de tareas de windows y donde esta corriendo la aplicacion del servicio del administrador de wampserver debes de correr phpMyadmin, que te aparece la siguiente pantalla:
+
+<p align="center">
+  <img src = "phpMyAdmin.jpg" />
+</p>
+
+creamos las tablas que se llama coches y articulos, definiendo sus campos, tipo de dato, ancho, tenemos asi la pantalla:
+
+<p align="center">
+  <img src = "PhpMyAdmin(tablas).jpg" />
+</p>
+
+<p><strong>Conexion a la base de datos mysql</strong></p>
+
+para establecer la conexion con la base de datos del proyecto de Flask con Mysql, desde el motor de busqueda de google www.google.com ponemos flask mysqldb y entramos a la siguiente pagina oficial del conector:
+
+https://flask-mysqldb.readthedocs.io/en/latest/
+
+debes instalar el paquete con pip install flask-mysqldb y desde el archivo del proyecto de Flask 'main.py' para poderlo utilizar debes de importarlo asi de esta manera from flask_mysqldb import MySQL
+
+# Conexion con la base de datos
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'proyectoflask'
+
+mysql = MySQL(app)
+
+
+<p><strong>Insertar datos</strong></p>
+
+Para poder insertar datos a la tabla coches, articulos (nos basamos en base a la tabla coches) asi:
+
+
+@app.route('/insertar_coche', methods=['GET', 'POST'])
+
+def insertar_coche():
+
+    if request.method == 'POST':
+
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        precio = request.form['precio']
+        ciudad = request.form['ciudad']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO coches(id, marca, modelo, precio, ciudad) VALUES(null, %s, %s, %s, %s)",(marca,modelo,precio,ciudad))
+        cursor.connection.commit()
+
+        flash('Has creado el coche correctamente!!!!')
+        
+        return redirect(url_for('index'))
+
+    return render_template('crear_coche.html',title="Crear Coche")
+    
+  <p><strong>Formulario para crear coche</strong></p>
+  
+  Para crear el formulario para este caso crear el coche dentro del archivo 'main.py' del proyecto tenemos un metodos que se llama 'insertar_coche'; y lo definimos de esta manera:
+  
+  
+  @app.route('/insertar_coche', methods=['GET', 'POST'])
+
+def insertar_coche():
+
+    if request.method == 'POST':
+
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        precio = request.form['precio']
+        ciudad = request.form['ciudad']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO coches(id, marca, modelo, precio, ciudad) VALUES(null, %s, %s, %s, %s)",(marca,modelo,precio,ciudad))
+        cursor.connection.commit()
+
+        flash('Has creado el coche correctamente!!!!')
+        
+        return redirect(url_for('index'))
+
+    return render_template('crear_coche.html',title="Crear Coche")
+    
+y dentro de la carpeta de templates tenemos el template 'crear_coche.html' que lo tenemos de la siguiente manera:
+
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    
+    {% if coches %}
+
+       {% for coche in coches %}
+           <h1>Editar coche: {{coche.1}} {{coche.2}}</h1>
+       {% endfor %}
+    {% else %}
+       <h1>{{title}}</h1> 
+    {% endif %}
+    
+    <form action="" method="POST">
+    
+        <label for="marca">Marca</label>
+        <input type="text" name="marca" placeholder="marca" maxlenght=50 {% if coches %} {% for coche in coches %} value="{{coche.1}}" {% endfor %} {% endif %}/>
+
+        <label for="modelo">Modelo</label>
+        <input type="text" name="modelo" placeholder="modelo" maxlenght=30 {% if coches %} {% for coche in coches %} value="{{coche.2}}" {% endfor %} {% endif %} />
+
+        <label for="precio">Precio</label>
+        <input type="number" name="precio" placeholder=0.00 {% if coches %} {% for coche in coches %} value="{{coche.3}}" {% endfor %} {% endif %} />
+
+        <label for="ciudad">Ciudad</label>
+        <input type="text" name="ciudad" placeholder="ciudad" maxlenght=80 {% if coches %} {% for coche in coches %} value="{{coche.4}}" {% endfor %} {% endif %} />
+
+        <input type="submit" value="Guardar" />
+
+    </form>
+    
+    
+{% endblock %}
 
