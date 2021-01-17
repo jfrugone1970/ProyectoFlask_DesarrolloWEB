@@ -581,5 +581,26 @@ y asi para todos los templates
 
 ahora bien para el manejo de las bases de datos te adjunto el codgo para que veas como esta codificado y veas el proyecto de "Flask"
 
+<h3><strong>Desarrollo web con Flask paso a paso - Bases de datos y formularios</strong></p>
+<p><strong>Crear base de datos</strong></p>
+
+A partir de ahora vamos a estar trabajando con una aplicacion completa vamos a crear una base de datos antes de nada debes de tener instalado Mysql en tu maquina para ellos puedes tener instalado wampserver que trae el mysql en el caso que ya tengas inslado wampserver debes de abrir mysql de la barra de tareas de windows y donde esta corriendo la aplicacion del servicio del administrador de wampserver debes de correr phpMyadmin, que te aparece la siguiente pantalla:
+
+<p align="center">
+  <img src = "phpMyAdmin.jpg" />
+</p>
+
+creamos las tablas que se llama coches y articulos, definiendo sus campos, tipo de dato, ancho, tenemos asi la pantalla:
+
+<p align="center">
+  <img src = "PhpMyAdmin(tablas).jpg" />
+</p>
+
+
+
+
+
+
+
 
 
