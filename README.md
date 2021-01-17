@@ -577,5 +577,9 @@ Para los demas templates asi definimos, por ejemplo en el templates 'informacion
 
 {% endblock %}
 
+y asi para todos los templates
+
+ahora bien para el manejo de las bases de datos te adjunto el codgo para que veas como esta codificado y veas el proyecto de "Flask"
+
 
 
