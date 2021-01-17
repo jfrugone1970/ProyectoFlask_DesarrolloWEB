@@ -639,14 +639,70 @@ def insertar_coche():
 
     return render_template('crear_coche.html',title="Crear Coche")
     
+  <p><strong>Formulario para crear coche</strong></p>
+  
+  Para crear el formulario para este caso crear el coche dentro del archivo 'main.py' del proyecto tenemos un metodos que se llama 'insertar_coche'; y lo definimos de esta manera:
+  
+  
+  @app.route('/insertar_coche', methods=['GET', 'POST'])
+
+def insertar_coche():
+
+    if request.method == 'POST':
+
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        precio = request.form['precio']
+        ciudad = request.form['ciudad']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO coches(id, marca, modelo, precio, ciudad) VALUES(null, %s, %s, %s, %s)",(marca,modelo,precio,ciudad))
+        cursor.connection.commit()
+
+        flash('Has creado el coche correctamente!!!!')
+        
+        return redirect(url_for('index'))
+
+    return render_template('crear_coche.html',title="Crear Coche")
     
+y dentro de la carpeta de templates tenemos el template 'crear_coche.html' que lo tenemos de la siguiente manera:
+
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
 
 
 
+{% block content %}
 
+    
+    {% if coches %}
 
+       {% for coche in coches %}
+           <h1>Editar coche: {{coche.1}} {{coche.2}}</h1>
+       {% endfor %}
+    {% else %}
+       <h1>{{title}}</h1> 
+    {% endif %}
+    
+    <form action="" method="POST">
+    
+        <label for="marca">Marca</label>
+        <input type="text" name="marca" placeholder="marca" maxlenght=50 {% if coches %} {% for coche in coches %} value="{{coche.1}}" {% endfor %} {% endif %}/>
 
+        <label for="modelo">Modelo</label>
+        <input type="text" name="modelo" placeholder="modelo" maxlenght=30 {% if coches %} {% for coche in coches %} value="{{coche.2}}" {% endfor %} {% endif %} />
 
+        <label for="precio">Precio</label>
+        <input type="number" name="precio" placeholder=0.00 {% if coches %} {% for coche in coches %} value="{{coche.3}}" {% endfor %} {% endif %} />
 
+        <label for="ciudad">Ciudad</label>
+        <input type="text" name="ciudad" placeholder="ciudad" maxlenght=80 {% if coches %} {% for coche in coches %} value="{{coche.4}}" {% endfor %} {% endif %} />
 
+        <input type="submit" value="Guardar" />
+
+    </form>
+    
+    
+{% endblock %}
 
