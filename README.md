@@ -596,6 +596,52 @@ creamos las tablas que se llama coches y articulos, definiendo sus campos, tipo 
   <img src = "PhpMyAdmin(tablas).jpg" />
 </p>
 
+<p><strong>Conexion a la base de datos mysql</strong></p>
+
+para establecer la conexion con la base de datos del proyecto de Flask con Mysql, desde el motor de busqueda de google www.google.com ponemos flask mysqldb y entramos a la siguiente pagina oficial del conector:
+
+https://flask-mysqldb.readthedocs.io/en/latest/
+
+debes instalar el paquete con pip install flask-mysqldb y desde el archivo del proyecto de Flask 'main.py' para poderlo utilizar debes de importarlo asi de esta manera from flask_mysqldb import MySQL
+
+# Conexion con la base de datos
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'proyectoflask'
+
+mysql = MySQL(app)
+
+
+<p><strong>Insertar datos</strong></p>
+
+Para poder insertar datos a la tabla coches, articulos (nos basamos en base a la tabla coches) asi:
+
+
+@app.route('/insertar_coche', methods=['GET', 'POST'])
+
+def insertar_coche():
+
+    if request.method == 'POST':
+
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        precio = request.form['precio']
+        ciudad = request.form['ciudad']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO coches(id, marca, modelo, precio, ciudad) VALUES(null, %s, %s, %s, %s)",(marca,modelo,precio,ciudad))
+        cursor.connection.commit()
+
+        flash('Has creado el coche correctamente!!!!')
+        
+        return redirect(url_for('index'))
+
+    return render_template('crear_coche.html',title="Crear Coche")
+    
+    
+
+
 
 
 
