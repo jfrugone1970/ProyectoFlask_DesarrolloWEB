@@ -4,6 +4,10 @@ Desarrollo WEB con Flask
 <h1><strong>Desarrollo WEB con Flask</strong></h1>
 <h3><strong>Proyecto Web con Flask</strong></h3>
 
+<p align="center">
+  <img src = "Flask.jpg" />
+</p>
+
 
 <p><strong>Instalacion de Flask</strong></p>
 
@@ -11,10 +15,19 @@ Flask en un framework de desarrollo WEB con Python que es otro framework, es un 
 
 c:\Users\Lenovo>python --version
 
+<p align="center">
+  <img src = "Flask.jpg" />
+</p>
+
+
 
 Ahora para instalar Flask desde la misma consola de comandos de windows ponemos
 
 c:\Users\Lenovo>pip install Flask
+
+<p align="center">
+  <img src = "Instalacion_Flask.jpg" />
+</p>
 
 Mayor informacion desde la pagina WEB:
 
@@ -60,6 +73,15 @@ if __name__ == '__main__:
 Para ejecutar el proyecto de Flask desde la consola de camandos de Windows digitamos lo siguiente:
 
 c:\wamp64\www\Curso_Udemy_Master_Python\23-flask>python main.py y nos apararece lo siguiente adjunto pantalla
+
+<p align="center">
+  <img src = "Flask_corriendo.jpg" />
+</p>
+
+<p align="center">
+  <img src = "Proyecto_Flask.jpg" />
+</p>
+
 
 
 <p><strong>Crear Rutas</strong></p>
@@ -377,7 +399,50 @@ def coche_unico(coche_id):
 if __name__ == '__main__':
     app.run(debug=True)
     
+   
+<h3><p><strong>Routing y vistas con Flask</h3></strong></p>
+<p><strong>Rutas con parametros</strong></p>
+
+Para establecer las rutas con parametros en la parte de la definicion de las rutas a lo que define la ruta con @app.route('/informacion/<string:nombres>/<string:apellidos>'), definimos los parametros con los simbolos menor que y mayor que dentro de estos simbolos especificando el tipo de dato que va a tener este parametro, asi en el archivo "main.py" del proyecto 'Flask' en la ruta informacion pasamos 2 parametros que son los nombres y los apellidos, asi:
+
+@app.route('/informacion')
+@app.route('/informacion/<string:nombre>/<string:apellidos>')
+
+def informacion(nombre=None, apellidos=None):
     
+    texto = ""
+
+    nombre = 'Lcdo. Jose Fernando'
+    apellidos = 'Frugone Jaramillo'
+
+    if nombre != None and apellidos != None:
+
+        texto = f"""
+                 <h1> Informacion </h1>
+                 <p> Pagina de informacion </p>
+                 <h3>Bienvenido, {nombre} {apellidos} </h3>  
+
+                """ 
+
+        return render_template('informacion.html',
+                                texto=texto,
+                                title="informacion")
+
+    texto = f"""
+               <h1> Informacion </h1>
+               <p> Pagina de Informacion </p>
+               <h3> Bienvenido, {nombre} {apellidos} </h3>
+             """
+   
+
+    return render_template('informacion.html',
+                            texto=texto,
+                            title="Informacion")
+
+
+<p><strong>Parametros opcionales</strong></p>
+
+
     
 
 
