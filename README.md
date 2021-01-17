@@ -477,4 +477,105 @@ def informacion(nombre=None, apellidos=None):
                             title="Informacion")
     
 
+<h3><strong>Layout, bloques y herencias de templates</strong></h3>
+
+El layout.html va hacer la pagina que ha a servir de molde para las demas paginas, que se basa el proyecto WEB de Flask, para los bloques en la pagina lo definimos asi {% block content %} {% endblock %} dentro de estas etiquetas, asi:
+
+<!DOCTYPE HTML>
+<html lang="es">
+      <head>
+          <meta charset="utf-8" />
+          <title>{% block title %} Master en Python - Flask {% endblock %} | Aprendiendo Flask con Victor Robles</title>
+          <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}" 
+      </head>
+      <body>
+
+           <header>
+                <div id="logotipo">
+                    <!-- Logo Django-->
+                    <img src="{{ url_for('static', filename='images/flask.png')}}" />
+                    <h1>Aprendiendo Flask con Victor Robles!!!</h1>
+
+                </div>
+
+            </header>
+
+               <nav>
+            
+                <ul>
+                   <li>
+                      <a href="/">Inicio</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('insertar_coche') }}">Crear coche</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('coches') }}">Listado de coches</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('lista_articulos') }}">Listado de articulos</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('crea_articulo') }}">Crear articulos</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('informacion') }}">Informacion</a> 
+                   </li>
+                   <li>
+                      <a href="{{ url_for('contacto') }}">Contacto</a> 
+                   </li>
+                   <li>
+                      <a href="{{ url_for('lenguajes') }}">Lenguajes</a> 
+                   </li>
+                </ul>
+               </nav> 
+
+            
+           <hr/>
+           
+           <div class="content">
+
+               <div class="box">
+                  
+                  {% block content %}
+                  <!-- Codigo que viene del template-->
+                  
+                  
+                  <!-- El mapa va en otro lugar -->
+
+                  {% endblock %}
+
+               </div>       
+        
+            </div>
+
+            
+          <footer>
+               Master en Python por Victor Robles &copy; Lcdo. Jose Frugone {{now.day}}/{{now.month}}/{{ now.year }}
+          </footer>    
+                
+      </body>
+
+      
+</html>
+
+<p><strong>Bloques y herencias</strong><p>
+  
+Para los demas templates asi definimos, por ejemplo en el templates 'informacion.html' degfinimos asi:
+
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>Pagina de informacion</h1>
+    <p> Esta es la pagina de informacion </p>
+    <h3>{{texto|safe}}</h3> 
+
+{% endblock %}
+
+
 
