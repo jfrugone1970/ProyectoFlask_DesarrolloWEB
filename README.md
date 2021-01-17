@@ -16,7 +16,7 @@ Flask en un framework de desarrollo WEB con Python que es otro framework, es un 
 c:\Users\Lenovo>python --version
 
 <p align="center">
-  <img src = "Flask.jpg" />
+  <img src = "Version_Python.jpg" />
 </p>
 
 
