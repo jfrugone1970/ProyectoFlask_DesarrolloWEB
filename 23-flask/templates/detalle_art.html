@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{articulos.1}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if articulos %}
+
+            <h3><p>Detalle de Articulos</p><h3>
+
+
+               {% for articulo in articulos %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                Modelo
+                                    {{articulo.2}} 
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{articulo.1}}
+                           |
+                           {{articulo.2}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{articulo.3}}
+                        </p>
+
+                                               
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+    
+    
+{% endblock %}

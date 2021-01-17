@@ -1,0 +1,60 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if articulos %}
+
+            <h3><p>Listado de Articulos</p><h3>
+
+
+               {% for articulo in articulos %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                <a href="{{ url_for('detalle_articulo', articulo_id=articulo.0)}}">Modelo : {{articulo.2}}</a>
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{articulo.1}}
+                           |
+                           {{articulo.2}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{articulo.3}}
+                        </p>
+
+                        <p>
+                           <a href="{{ url_for('editar_articulo', articulo_id=articulo.0) }}" class="btn1 btn1-warning">Editar</a>
+                           <a href="{{ url_for('borrar_articulo', articulo_id=articulo.0) }}" class="btn btn-success">Eliminar</a>
+                        </p>
+                        
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+
+    
+    
+{% endblock %}

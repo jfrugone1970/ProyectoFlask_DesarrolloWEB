@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="es">
+      <head>
+          <meta charset="utf-8" />
+          <title>{% block title %} Master en Python - Flask {% endblock %} | Aprendiendo Flask con Victor Robles</title>
+          <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}" 
+      </head>
+      <body>
+
+           <header>
+                <div id="logotipo">
+                    <!-- Logo Django-->
+                    <img src="{{ url_for('static', filename='images/flask.png')}}" />
+                    <h1>Aprendiendo Flask con Victor Robles!!!</h1>
+
+                </div>
+
+            </header>
+
+               <nav>
+            
+                <ul>
+                   <li>
+                      <a href="/">Inicio</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('insertar_coche') }}">Crear coche</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('coches') }}">Listado de coches</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('lista_articulos') }}">Listado de articulos</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('crea_articulo') }}">Crear articulos</a>
+                   </li>
+                   <li>
+                      <a href="{{ url_for('informacion') }}">Informacion</a> 
+                   </li>
+                   <li>
+                      <a href="{{ url_for('contacto') }}">Contacto</a> 
+                   </li>
+                   <li>
+                      <a href="{{ url_for('lenguajes') }}">Lenguajes</a> 
+                   </li>
+                </ul>
+               </nav> 
+
+            
+           <hr/>
+           
+           <div class="content">
+
+               <div class="box">
+                  
+                  {% block content %}
+                  <!-- Codigo que viene del template-->
+                  
+                  
+                  <!-- El mapa va en otro lugar -->
+
+                  {% endblock %}
+
+               </div>       
+        
+            </div>
+
+            
+          <footer>
+               Master en Python por Victor Robles &copy; Lcdo. Jose Frugone {{now.day}}/{{now.month}}/{{ now.year }}
+          </footer>    
+                
+      </body>
+
+      
+</html>

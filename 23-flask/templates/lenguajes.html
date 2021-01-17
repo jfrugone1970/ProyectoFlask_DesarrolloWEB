@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  
+  {{info}}
+
+  {{ super() }}
+
+{% endblock %}
+
+{% block content %}
+
+    <h1>{{title|safe}}</h1>
+    <p> Esta es la pagina de Lenguajes </p>
+
+    {{texto|safe}}
+    
+{% endblock %}
+

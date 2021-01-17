@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if coches %}
+
+            <h3><p>Listado de coches</p><h3>
+
+
+               {% for coche in coches %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                <a href="{{ url_for('detalle_coches', coche_id=coche.0)}}">Modelo : {{coche.2}}</a>
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{coche.1}}
+                           |
+                           {{coche.3}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{coche.4}}
+                        </p>
+
+                        <p>
+                           <a href="{{ url_for('editar_coches', coche_id=coche.0)}}" class="btn1 btn1-warning">Editar</a>
+                           <a href="{{ url_for('borrar_coches', coche_id=coche.0)}}" class="btn btn-success">Eliminar</a>
+                        </p>
+                        
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+
+    
+    
+{% endblock %}
+
