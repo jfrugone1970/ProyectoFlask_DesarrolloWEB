@@ -442,7 +442,39 @@ def informacion(nombre=None, apellidos=None):
 
 <p><strong>Parametros opcionales</strong></p>
 
+@app.route('/informacion')
+@app.route('/informacion/<string:nombre>/<string:apellidos>')
 
+def informacion(nombre=None, apellidos=None):
+    
+    texto = ""
+
+    nombre = 'Lcdo. Jose Fernando'
+    apellidos = 'Frugone Jaramillo'
+
+    if nombre != None and apellidos != None:
+
+        texto = f"""
+                 <h1> Informacion </h1>
+                 <p> Pagina de informacion </p>
+                 <h3>Bienvenido, {nombre} {apellidos} </h3>  
+
+                """ 
+
+        return render_template('informacion.html',
+                                texto=texto,
+                                title="informacion")
+
+    texto = f"""
+               <h1> Informacion </h1>
+               <p> Pagina de Informacion </p>
+               <h3> Bienvenido, {nombre} {apellidos} </h3>
+             """
+   
+
+    return render_template('informacion.html',
+                            texto=texto,
+                            title="Informacion")
     
 
 
