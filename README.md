@@ -706,3 +706,76 @@ y dentro de la carpeta de templates tenemos el template 'crear_coche.html' que l
     
 {% endblock %}
 
+<p><strong>Recoger datos del formulario y guardar datos en la base de datos</strong></p>
+
+Para recoger los valores que viene del formulario en nuestro archivo 'main.py' en el momento de haber definido el metodo 'insertar-coche', hay que definir los metodos que va a tener el procedimiento '/insertar-coche' que son 'GET', 'POST', y hay que preguntar primeramente si se recibe los datos mediante el metodo 'POST' de esta manera if request.methods == 'POST':
+
+y asignamos en varias variables los datos que recibe del formulario en este caso de ingreso de coches, estos valores son reemplazados en la instruccion Insert de la base de datos, asi:
+
+@app.route('/insertar_coche', methods=['GET', 'POST'])
+
+def insertar_coche():
+
+    if request.method == 'POST':
+
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        precio = request.form['precio']
+        ciudad = request.form['ciudad']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO coches(id, marca, modelo, precio, ciudad) VALUES(null, %s, %s, %s, %s)",(marca,modelo,precio,ciudad))
+        cursor.connection.commit()
+
+        flash('Has creado el coche correctamente!!!!')
+        
+        return redirect(url_for('index'))
+
+    return render_template('crear_coche.html',title="Crear Coche")
+
+Es decir si lo que recibe es recibido por 'POST' (con la instruccion if) hace todo lo que esta dentro de la instruccion if, luego que guarda los datos hace un return redirect (con el url_for('index')), en el caso de que no se haya recibido por medio de 'POST' va a llamar al template 'crear_coche'
+
+<p><strong>Mensaje flask en Flask</strong></p>
+
+Para poder hacer uso de los mensajes flask en Flask es simplemente sencillo, tan solo con poner po ejemplo en el metodo ('/insertar_coche'), asi de esta manera:
+
+flask('Has creado el coche correctamente!!!!'), pero para hacer uso de los mensaje flask en este caso en el archivo 'main.py' del proyecto "ProyectoFlask", en la parte de arriba del archivo hay que importar para el uso del mensaje de flask de esta manera:
+
+from flask import flask
+
+Y en el archivo 'index.html' (dentro de la carpeta de los templates del proyecto)
+
+{% extends 'layout.html' %}
+
+{% block title %}{{info}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+    <p> Esta es la pagina de Inicio </p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+            {% for message in messages %}
+                <div class="message alert-success">
+                    {{message}}
+                </div>
+            {% endfor %}
+
+        {% endif %}
+    {% endwith %}
+
+    {% include 'includes/edad.html' %}
+    {% include 'includes/persona.html' %} 
+    
+{% endblock %}
+
+
+
+
+
+
+
