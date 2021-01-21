@@ -924,6 +924,22 @@ En la carpeta de '/templates' tenemos el archivo 'detalle.html' que esta de la s
 {% endblock %}
 
 
+<p><strong>Borrar registros</strong></p>
+
+Para borrar registro de Mysql usando flask vamos hacer un metodos parecido que se llama "/borrar_coches", que va a tener como parametro el coche_id que va a tener el id del codigo del registro que se va a borrar pero se va a usar la instruccion Delete de Mysql para borrar registro, asi tenemos el metodo:
+
+@app.route('/borrar_coches/<coche_id>')
+def borrar_coches(coche_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM coches WHERE id = %s", coche_id)
+    mysql.connection.commit()
+
+    flash('El coche ha sido eliminado !!!')
+    
+    return redirect(url_for('index'))
+    
+(Esto se define dentro del archivo 'main.py' del proyecto)
+
 
 
 
