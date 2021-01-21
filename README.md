@@ -773,6 +773,83 @@ Y en el archivo 'index.html' (dentro de la carpeta de los templates del proyecto
     
 {% endblock %}
 
+<p><strong>Como hacer listado en Flak: Ejemplo listado de coches</strong></p>
+
+Para hacer el listado dentro de flask, para ello vamos hacer un metodo por ejemplo que se llama ('/coches'); que va hacer una consulta de toda la tabla coches, que se asigna a una variable de tipo cursor donde van a estar los datos que se llame coches, estos se van a mostrar dentro de un template que se llama coches.html, a continuacion la funcion coches:
+
+@app.route('/coches')
+def coches():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM coches")
+
+    coches = cursor.fetchall()
+    cursor.close()
+
+    return render_template('coches.html', coches=coches, title="Listado de Coches")
+    
+En el templates "coches.html", tenemos asi de la siguiente manera:
+
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if coches %}
+
+            <h3><p>Listado de coches</p><h3>
+
+
+               {% for coche in coches %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                <a href="{{ url_for('detalle_coches', coche_id=coche.0)}}">Modelo : {{coche.2}}</a>
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{coche.1}}
+                           |
+                           {{coche.3}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{coche.4}}
+                        </p>
+
+                        <p>
+                           <a href="{{ url_for('editar_coches', coche_id=coche.0)}}" class="btn1 btn1-warning">Editar</a>
+                           <a href="{{ url_for('borrar_coches', coche_id=coche.0)}}" class="btn btn-success">Eliminar</a>
+                        </p>
+                        
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+
+    
+    
+{% endblock %}
+
 
 
 
