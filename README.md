@@ -850,6 +850,79 @@ En el templates "coches.html", tenemos asi de la siguiente manera:
     
 {% endblock %}
 
+<p><strong>Pagina de detalle</strong></p>
+
+Para hacer la pagina de detalle del listado en este caso como tomamos como ejemplo del listado "coches.html", se va hacer un metodos que se llama 'detalle_cocjes', que va a tener un parametro que va hacer el coche_id es decir, el id del coche, es decir que dentro de la funcion "detalle_coches", se obtengan del listado de los coches que tengan el id = coches_id, tenemos la siguiente funcion detalle_coches asi:
+
+@app.route('/detalle_coches/<coche_id>')
+def detalle_coches(coche_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM coches WHERE id = %s", coche_id)
+
+    coches = cursor.fetchall()
+    cursor.close()
+
+    return render_template('detalle.html', coches=coches, title="Detalle de Coche")
+    
+En la carpeta de '/templates' tenemos el archivo 'detalle.html' que esta de la siguiente manera:
+
+{% extends 'layout.html' %}
+
+{% block title %}{{coches.2}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if coches %}
+
+            <h3><p>Listado de coches</p><h3>
+
+
+               {% for coche in coches %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                Modelo
+                                    {{coche.2}} 
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{coche.1}}
+                           |
+                           {{coche.3}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{coche.4}}
+                        </p>
+
+                                               
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+    
+    
+{% endblock %}
+
 
 
 
