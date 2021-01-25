@@ -706,3 +706,242 @@ y dentro de la carpeta de templates tenemos el template 'crear_coche.html' que l
     
 {% endblock %}
 
+<p><strong>Recoger datos del formulario y guardar datos en la base de datos</strong></p>
+
+Para recoger los valores que viene del formulario en nuestro archivo 'main.py' en el momento de haber definido el metodo 'insertar-coche', hay que definir los metodos que va a tener el procedimiento '/insertar-coche' que son 'GET', 'POST', y hay que preguntar primeramente si se recibe los datos mediante el metodo 'POST' de esta manera if request.methods == 'POST':
+
+y asignamos en varias variables los datos que recibe del formulario en este caso de ingreso de coches, estos valores son reemplazados en la instruccion Insert de la base de datos, asi:
+
+@app.route('/insertar_coche', methods=['GET', 'POST'])
+
+def insertar_coche():
+
+    if request.method == 'POST':
+
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        precio = request.form['precio']
+        ciudad = request.form['ciudad']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO coches(id, marca, modelo, precio, ciudad) VALUES(null, %s, %s, %s, %s)",(marca,modelo,precio,ciudad))
+        cursor.connection.commit()
+
+        flash('Has creado el coche correctamente!!!!')
+        
+        return redirect(url_for('index'))
+
+    return render_template('crear_coche.html',title="Crear Coche")
+
+Es decir si lo que recibe es recibido por 'POST' (con la instruccion if) hace todo lo que esta dentro de la instruccion if, luego que guarda los datos hace un return redirect (con el url_for('index')), en el caso de que no se haya recibido por medio de 'POST' va a llamar al template 'crear_coche'
+
+<p><strong>Mensaje flask en Flask</strong></p>
+
+Para poder hacer uso de los mensajes flask en Flask es simplemente sencillo, tan solo con poner po ejemplo en el metodo ('/insertar_coche'), asi de esta manera:
+
+flask('Has creado el coche correctamente!!!!'), pero para hacer uso de los mensaje flask en este caso en el archivo 'main.py' del proyecto "ProyectoFlask", en la parte de arriba del archivo hay que importar para el uso del mensaje de flask de esta manera:
+
+from flask import flask
+
+Y en el archivo 'index.html' (dentro de la carpeta de los templates del proyecto)
+
+{% extends 'layout.html' %}
+
+{% block title %}{{info}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+    <p> Esta es la pagina de Inicio </p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+            {% for message in messages %}
+                <div class="message alert-success">
+                    {{message}}
+                </div>
+            {% endfor %}
+
+        {% endif %}
+    {% endwith %}
+
+    {% include 'includes/edad.html' %}
+    {% include 'includes/persona.html' %} 
+    
+{% endblock %}
+
+<p><strong>Como hacer listado en Flak: Ejemplo listado de coches</strong></p>
+
+Para hacer el listado dentro de flask, para ello vamos hacer un metodo por ejemplo que se llama ('/coches'); que va hacer una consulta de toda la tabla coches, que se asigna a una variable de tipo cursor donde van a estar los datos que se llame coches, estos se van a mostrar dentro de un template que se llama coches.html, a continuacion la funcion coches:
+
+@app.route('/coches')
+def coches():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM coches")
+
+    coches = cursor.fetchall()
+    cursor.close()
+
+    return render_template('coches.html', coches=coches, title="Listado de Coches")
+    
+En el templates "coches.html", tenemos asi de la siguiente manera:
+
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if coches %}
+
+            <h3><p>Listado de coches</p><h3>
+
+
+               {% for coche in coches %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                <a href="{{ url_for('detalle_coches', coche_id=coche.0)}}">Modelo : {{coche.2}}</a>
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{coche.1}}
+                           |
+                           {{coche.3}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{coche.4}}
+                        </p>
+
+                        <p>
+                           <a href="{{ url_for('editar_coches', coche_id=coche.0)}}" class="btn1 btn1-warning">Editar</a>
+                           <a href="{{ url_for('borrar_coches', coche_id=coche.0)}}" class="btn btn-success">Eliminar</a>
+                        </p>
+                        
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+
+    
+    
+{% endblock %}
+
+<p><strong>Pagina de detalle</strong></p>
+
+Para hacer la pagina de detalle del listado en este caso como tomamos como ejemplo del listado "coches.html", se va hacer un metodos que se llama 'detalle_cocjes', que va a tener un parametro que va hacer el coche_id es decir, el id del coche, es decir que dentro de la funcion "detalle_coches", se obtengan del listado de los coches que tengan el id = coches_id, tenemos la siguiente funcion detalle_coches asi:
+
+@app.route('/detalle_coches/<coche_id>')
+def detalle_coches(coche_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM coches WHERE id = %s", coche_id)
+
+    coches = cursor.fetchall()
+    cursor.close()
+
+    return render_template('detalle.html', coches=coches, title="Detalle de Coche")
+    
+En la carpeta de '/templates' tenemos el archivo 'detalle.html' que esta de la siguiente manera:
+
+{% extends 'layout.html' %}
+
+{% block title %}{{coches.2}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if coches %}
+
+            <h3><p>Listado de coches</p><h3>
+
+
+               {% for coche in coches %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                Modelo
+                                    {{coche.2}} 
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{coche.1}}
+                           |
+                           {{coche.3}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{coche.4}}
+                        </p>
+
+                                               
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+    
+    
+{% endblock %}
+
+
+<p><strong>Borrar registros</strong></p>
+
+Para borrar registro de Mysql usando flask vamos hacer un metodos parecido que se llama "/borrar_coches", que va a tener como parametro el coche_id que va a tener el id del codigo del registro que se va a borrar pero se va a usar la instruccion Delete de Mysql para borrar registro, asi tenemos el metodo:
+
+@app.route('/borrar_coches/<coche_id>')
+def borrar_coches(coche_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM coches WHERE id = %s", coche_id)
+    mysql.connection.commit()
+
+    flash('El coche ha sido eliminado !!!')
+    
+    return redirect(url_for('index'))
+    
+(Esto se define dentro del archivo 'main.py' del proyecto)
+
+
+
+
+
+
