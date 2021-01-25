@@ -123,6 +123,34 @@ def insertar_coche():
 
     return render_template('crear_coche.html',title="Crear Coche")
 
+@app.route('/crear_agenda', methods=['GET', 'POST'])
+
+def crear_agenda():
+
+    if request.method == 'POST':
+
+        ## Pasa los valores por parametros
+
+        apellido = request.form['apellidos']
+        nombre = request.form['nombres']
+        direccion = request.form['direccion']
+        fono = request.form['telefono']
+        pais = request.form['pais']
+        ciudad = request.form['ciudad']
+     
+        cursor = mysql.connection.cursor()
+
+        cursor.execute("INSERT INTO agenda(id,apellidos,nombres,direccion,telefono,pais,ciudad) VALUES(null, %s, %s, %s, %s, %s, %s)",(apellido,nombre,direccion,fono,pais,ciudad))
+        cursor.connection.commit()
+
+        flash("Has creado datos en la agenda correctamente...!!!!")
+
+        return redirect(url_for('index'))
+
+    return render_template('crea_agenda.html',title="Crear agenda")    
+
+
+
 @app.route('/crea_articulo', methods=['GET', 'POST'])
 
 def crea_articulo():
@@ -155,6 +183,17 @@ def coches():
 
     return render_template('coches.html', coches=coches, title="Listado de Coches")
 
+@app.route('/agendas')
+def agendas():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM agenda")
+
+    agendas = cursor.fetchall()
+    cursor.close()
+
+    return render_template('agendas.html', agendas=agendas, title="Listado de agenda")
+
+
 @app.route('/lista_articulos')
 def lista_articulos():
     cursor = mysql.connection.cursor()
@@ -184,7 +223,17 @@ def detalle_articulo(articulo_id):
     articulos = cursor.fetchall()
     cursor.close()
 
-    return render_template('detalle_art.html', articulos=articulos, title="Detalle de  Articulos") 
+    return render_template('detalle_art.html', articulos=articulos, title="Detalle de  Articulos")
+
+@app.route('/detalle_agenda/<agenda_id>')
+def detalle_agenda(agenda_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM agenda WHERE id = %s", agenda_id)
+
+    agendas = cursor.fetchall()
+    cursor.close()
+
+    return render_template('detalle_agenda.html', agendas=agendas, title="Detalle de Agendas")
 
 
 @app.route('/borrar_coches/<coche_id>')
@@ -206,6 +255,16 @@ def borrar_articulo(articulo_id):
     flash('El articulo ha sido eliminado !!!')
 
     return redirect(url_for('index'))
+
+@app.route('/borrar_agenda/<agenda_id>')
+def borrar_agenda(agenda_id):
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM agenda WHERE id = %s", agenda_id)
+    mysql.connection.commit()
+
+    flash('Has eliminado persona de agenda !!!')
+
+    return redirect(url_for('index')) 
 
 
 @app.route('/editar_coches/<coche_id>', methods=['GET', 'POST'])
@@ -249,6 +308,54 @@ def editar_coches(coche_id):
                             info='Coches',
                             edad=edad,
                             coches=coches)
+
+@app.route('/editar_agenda/<agenda_id>', methods=['GET', 'POST'])
+
+def editar_agenda(agenda_id):
+
+    if request.method == 'POST':
+
+        apellidos = request.form['apellidos']
+        nombres = request.form['nombres']
+        direccion = request.form['direccion']
+        telefono = request.form['telefono']
+        pais = request.form['pais']
+        ciudad = request.form['ciudad']
+
+    
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+               UPDATE agenda
+                SET apellidos = %s,
+                    nombres = %s,
+                    direccion = %s,
+                    telefono = %s,
+                    pais = %s,
+                    ciudad = %s
+                WHERE id = %s    
+
+        """, (apellidos,nombres,direccion,telefono,pais,ciudad,agenda_id))
+        cursor.connection.commit()
+
+        flash('Has editado la agenda correctamente....!')
+
+        edad = 50
+        
+        return redirect(url_for('index'))
+
+    cursor2 = mysql.connection.cursor()
+    cursor2.execute("SELECT * FROM agenda WHERE id = %s", (agenda_id))
+
+    agendas = cursor2.fetchall()
+
+    edad = 50
+    
+    return render_template('crea_agenda.html',
+                            title='Crear agendas',
+                            info='Agendas',
+                            edad=edad,
+                            agendas=agendas)
+
 
 @app.route('/editar_articulo/<articulo_id>', methods=['GET', 'POST'])
 

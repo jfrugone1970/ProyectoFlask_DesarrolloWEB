@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    
+    {% if agendas %}
+
+       {% for agenda in agendas %}
+           <h1>Editar Agenda: {{agenda.1}} {{agenda.2}}</h1>
+       {% endfor %}
+    {% else %}
+       <h1>{{title}}</h1> 
+    {% endif %}
+    
+    <form action="" method="POST">
+    
+        <label for="apellidos">Apellidos</label>
+        <input type="text" name="apellidos" placeholder="apellidos" maxlenght=50 {% if agendas %} {% for agenda in agendas %} value="{{agenda.1}}" {% endfor %} {% endif %}/>
+
+        <label for="nombres">Nombres</label>
+        <input type="text" name="nombres" placeholder="nombres" maxlenght=30 {% if agendas %} {% for agenda in agendas %} value="{{agenda.2}}" {% endfor %} {% endif %} />
+
+        <label for="direccion">Direccion</label>
+        <input type="text" name="direccion" placeholder="direccion" maxlenght=100 {% if agendas %} {% for agenda in agendas %} value="{{agenda.3}}" {% endfor %} {% endif %} />
+
+        <label for="telefono">Telefono</label>
+        <input type="text" name="telefono" placeholder="telefono" maxlenght=30 {% if agendas %} {% for agenda in agendas %} value="{{agenda.4}}" {% endfor %} {% endif %} />
+
+        <label for="pais">Pais</label>
+        <input type="text" name="pais" placeholder="pais" maxlenght=150 {% if agendas %} {% for agenda in agendas %} value="{{agenda.5}}" {% endfor %} {% endif %} />
+
+        <label for="ciudad">Ciudad</label>
+        <input type="text" name="ciudad" placeholder="ciudad" maxlenght=150 {% if agendas %} {% for agenda in agendas %} value="{{agenda.6}}" {% endfor %} {% endif %} />
+        
+
+        <input type="submit" value="Guardar" />
+
+    </form>
+    
+    
+{% endblock %}

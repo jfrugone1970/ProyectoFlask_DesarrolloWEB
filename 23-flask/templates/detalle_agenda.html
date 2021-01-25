@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{agendas.1}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if agendas %}
+
+            <h3><p>Detalle de Agenda</p><h3>
+
+
+               {% for agenda in agendas %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                        <p>
+                                Direccion
+                                    {{agenda.3}} 
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{agenda.4}}
+                           |
+                           {{agenda.5}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{agenda.6}}
+                        </p>
+
+                                               
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+    
+    
+{% endblock %}

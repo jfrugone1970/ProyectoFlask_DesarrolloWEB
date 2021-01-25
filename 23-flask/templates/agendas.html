@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+
+
+{% block content %}
+
+    <h1>{{title}}</h1>
+
+    {% if agendas %}
+
+            <h3><p>Listado de agendas</p><h3>
+
+
+               {% for agenda in agendas %}
+
+                  <article class="article-item">
+
+                    
+                     <div class="data">
+                        
+                         <p>
+                                <a href="{{ url_for('detalle_agenda', agenda_id=agenda.0)}}">Persona : {{agenda.1}} {{agenda.2}}</a>
+                        </p>
+                
+                        <span class="date">
+                           
+                           {{agenda.3}}
+                           |
+                           {{agenda.4}} 
+                           
+                           
+                        </span>
+                        <p>
+                           {{agenda.5}}
+                           |
+                           {{agenda.6}}
+                        </p>
+
+                        <p>
+                           <a href="{{ url_for('editar_agenda', agenda_id=agenda.0)}}" class="btn1 btn1-warning">Editar</a>
+                           <a href="{{ url_for('borrar_agenda', agenda_id=agenda.0)}}" class="btn btn-success">Eliminar</a>
+                        </p>
+                        
+                     </div>
+
+                     <div class="clearfix"></div>
+                     <br/>
+
+                  </article>
+                  
+               {% endfor %}
+
+            
+
+    {% endif %}
+    
+
+    
+    
+{% endblock %}
+

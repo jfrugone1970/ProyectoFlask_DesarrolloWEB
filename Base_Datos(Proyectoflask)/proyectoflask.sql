@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 17-01-2021 a las 17:06:36
+-- Tiempo de generación: 25-01-2021 a las 00:12:08
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.3.21
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `proyectoflask`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `agenda`
+--
+
+DROP TABLE IF EXISTS `agenda`;
+CREATE TABLE IF NOT EXISTS `agenda` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `apellidos` varchar(50) NOT NULL,
+  `nombres` varchar(50) NOT NULL,
+  `direccion` varchar(100) NOT NULL,
+  `telefono` varchar(30) NOT NULL,
+  `pais` varchar(150) NOT NULL,
+  `ciudad` varchar(150) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `agenda`
+--
+
+INSERT INTO `agenda` (`id`, `apellidos`, `nombres`, `direccion`, `telefono`, `pais`, `ciudad`) VALUES
+(2, 'Frugone Jaramillo', 'Jose Fernando', 'Cdla Sauces 2 Mz F50 Villa 12', '0992826240', 'Ecuador', 'Guayaquil');
 
 -- --------------------------------------------------------
 
@@ -41,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `articulos` (
 --
 
 INSERT INTO `articulos` (`id`, `marca`, `modelo`, `precio`) VALUES
-(1, 'Television Samsung', 'Samsung Plasma', 850),
+(1, 'Television Samsung', 'Samsung Plasma', 950),
 (2, 'Horno microonda', 'LG', 400),
 (3, 'Equipo de Sonido', 'Sony', 950);
 
